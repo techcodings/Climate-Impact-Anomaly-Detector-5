@@ -1,39 +1,48 @@
-# Feature 5 – Climate Impact & Anomaly Detector (Flask)
+---
+title: "Feature 5 – Climate Impact & Anomaly Detector"
+emoji: 🌍
+colorFrom: green
+colorTo: yellow
+sdk: docker
+pinned: false
+---
 
-This is a standalone implementation of **Feature 5: Climate Impact & Anomaly Detector**
-with a Flask UI and a small trainable anomaly model.
+# 🌍 Feature 5 – Climate Impact & Anomaly Detector
 
-## What "training the model" means here
+This is a Flask-based demo app that simulates **climate impact and anomaly detection** for agricultural fields.
 
-- `ClimateDataManager.generate_training_history()` produces multi-year synthetic daily climate data
-  with features: `tavg`, `rain`, `spi`, `spei`.
-- `ClimateAnomalyModel.train()` computes a mean/std vector and a Gaussian anomaly threshold.
-- On app startup, we train the anomaly model once and then use it to score recent climate data.
+It uses synthetic climate & crop signals, temporal models, and rule-based / ML-like logic (see `models/`) to:
+- Ingest region, crop and scenario
+- Fuse synthetic climate features and impact models
+- Detect anomalies & generate impact summaries
+- Render visualizations (plots) into `static/generated/`
+- Show results in a simple web UI
 
-In production you can replace this module with:
-- Multimodal transformers over satellite + weather + soil + bulletins + user inputs.
-- TFT / Informer models for temporal anomaly forecasting.
-- Bayesian ensembles for uncertainty-aware thresholds.
+---
 
-## Running locally
+## 🔧 Tech Stack
 
-```bash
-cd feature5_climate_anomaly
-python -m venv .venv
-source .venv/bin/activate  # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-python app.py
-```
+- **Python 3.11**
+- **Flask** for the web app
+- **Matplotlib / NumPy / etc.** for visualization & synthetic data
+- **Gunicorn** as the production WSGI server (for Hugging Face Spaces – Docker)
 
-Open `http://localhost:5005` in your browser.
+---
 
-## Integration notes
+## 🗂 Project Structure
 
-- Import `create_app` into your unified agro_features_suite backend or behind a FastAPI gateway.
-- Replace `ClimateDataManager` stubs with real:
-  - Open-Meteo weather, Sentinel-2/MODIS NDVI/EVI, Copernicus terrain.
-  - NewsAPI free tier / FAO bulletins.
-  - EuroCropsML crop patterns.
-  - SPI / SPEI indices and extreme event datasets (NASA FIRMS, global flood archives).
-- Replace `ClimateAnomalyModel` with your multimodal transformer + TFT/Informer architecture.
-- Keep the UI and output schema; they are designed to be compatible with more advanced backends.
+```text
+.
+├── app.py            # Flask entrypoint (exposes create_app())
+├── requirements.txt  # Python dependencies
+├── Dockerfile        # Hugging Face Space config (Docker)
+├── models/           # Config, data loader, models, RL, image generator
+├── static/
+│   ├── css/style.css # Neon AgroVerse theme
+│   ├── js/main.js    # Optional JS (if used)
+│   └── generated/    # Generated PNGs for plots
+├── templates/
+│   ├── base.html
+│   ├── index.html    # Inputs form
+│   └── results.html  # Result dashboard
+└── README.md
