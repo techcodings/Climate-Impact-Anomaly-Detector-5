@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Climate Impact & Anomaly Detector{% endblock %}
+{% block content %}
+<div class="feature5-shell">
+  <div class="row justify-content-center">
+    <div class="col-12 feature5-form-wrapper">
+      <div class="card shadow-sm mb-3">
+        <div class="card-header fw-bold">Climate Inputs</div>
+        <div class="card-body">
+          <form method="post">
+            <div class="mb-3">
+              <label class="form-label">Region</label>
+              <select name="region" class="form-select">
+                {% for r in regions %}
+                  <option value="{{ r }}">{{ r }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Main crop</label>
+              <select name="crop" class="form-select">
+                {% for c in crops %}
+                  <option value="{{ c }}">{{ c }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Scenario</label>
+              <select name="scenario" class="form-select">
+                {% for val, label in scenarios %}
+                  <option value="{{ val }}">{{ label }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">
+                Local extreme event observations (optional)
+              </label>
+              <textarea
+                name="user_event"
+                rows="5"
+                class="form-control"
+                placeholder="e.g., 'Severe heatwave last week', 'Flash flood in low-lying area', 'Dust storm damaged leaves'"
+              ></textarea>
+            </div>
+
+            <div class="d-grid">
+              <button class="btn btn-primary" type="submit">
+                Run Climate Anomaly Analysis
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

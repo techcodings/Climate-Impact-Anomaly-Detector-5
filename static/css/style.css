@@ -1,0 +1,361 @@
+/* ========================================
+   AgroVerse Neon Theme – Feature 5
+   Climate Impact & Anomaly Detector
+   ======================================== */
+
+/* ========== 1. ROOT VARIABLES ========== */
+:root {
+  /* --- Color Palette --- */
+  --color-bg-primary: #0a0e0a; /* Darkest Green-Black */
+  --color-bg-secondary: #141a14; /* Dark Green-Gray */
+  --color-bg-tertiary: #1f2a1f; /* Lighter Green-Gray */
+  
+  --color-text-primary: #f0ffe0; /* Pale Yellow-Green (Almost White) */
+  --color-text-secondary: #d4f7a6; /* Light Lime */
+  --color-text-muted: #8fb569; /* Muted Olive */
+
+  --color-accent-yellow: #f4ff4e; /* Electric Yellow */
+  --color-accent-lime: #bef22d; /* Electric Lime */
+  --color-accent-green: #34d399; /* Bright Emerald */
+  --color-accent-chartreuse: #7fff00;
+  --color-accent-neon: #ccff00;
+  --color-accent-red: #ff6b6b; /* For alerts / errors */
+
+  --color-border: #2d3d2d;
+  --color-border-light: #3d5a3d;
+
+  /* --- Gradients --- */
+  --gradient-primary: linear-gradient(
+    135deg,
+    var(--color-accent-yellow),
+    var(--color-accent-lime),
+    var(--color-accent-green)
+  );
+  --gradient-secondary: linear-gradient(
+    135deg,
+    var(--color-accent-neon),
+    var(--color-accent-chartreuse)
+  );
+  
+  /* --- Spacing & Radius --- */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+
+  --border-radius-sm: 0.5rem;
+  --border-radius-md: 0.75rem;
+  --border-radius-lg: 1rem;
+
+  /* --- Transitions & Shadows (ENHANCED) --- */
+  --transition-fast: 0.2s ease-out;
+  --transition-normal: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --transition-slow: 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+
+  --shadow-neon-sm: 0 0 8px rgba(244, 255, 78, 0.3),
+    0 0 16px rgba(190, 242, 45, 0.2);
+  --shadow-neon-md: 0 2px 16px rgba(244, 255, 78, 0.4),
+    0 0 24px rgba(190, 242, 45, 0.3);
+  --shadow-neon-lg: 0 4px 24px rgba(244, 255, 78, 0.5),
+    0 0 48px rgba(190, 242, 45, 0.4);
+
+  --text-shadow-neon: 0 0 8px rgba(204, 255, 0, 0.7),
+    0 0 16px rgba(244, 255, 78, 0.5);
+}
+
+/* =======================================
+   2. BASE, RESETS, & KEYFRAMES
+   ======================================= */
+
+/* Base reset */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  font-size: 16px;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+    'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+    'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background:
+    radial-gradient(circle at top, #071308 0, #020604 55%, #010203 100%);
+  color: var(--color-text-secondary);
+  overflow-x: hidden;
+  line-height: 1.6;
+  position: relative;
+  min-height: 100vh;
+}
+
+/* Animated neon grid overlay */
+body::before {
+  content: "";
+  position: fixed;
+  inset: -40px;
+  pointer-events: none;
+  background-image:
+    linear-gradient(90deg, rgba(190, 242, 45, 0.08) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(190, 242, 45, 0.06) 1px, transparent 1px);
+  background-size: 44px 44px;
+  opacity: 0.7;
+  mix-blend-mode: screen;
+  animation: enhancedGridMoveAgro 32s linear infinite;
+  z-index: -1;
+}
+
+@keyframes enhancedGridMoveAgro {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-40px, -40px, 0); }
+}
+
+/* =======================================
+   3. NAVBAR + BACK TO PORTAL
+   ======================================= */
+
+.navbar {
+  background: rgba(5, 12, 6, 0.96) !important;
+  border-bottom: 1px solid rgba(190, 242, 45, 0.55);
+  backdrop-filter: blur(16px);
+  box-shadow: var(--shadow-neon-md);
+}
+
+.navbar-brand {
+  font-weight: 700;
+  color: var(--color-accent-yellow) !important;
+  text-shadow: var(--text-shadow-neon);
+}
+
+/* optional top-right pill link */
+.back-to-portal {
+  background-image: var(--gradient-primary);
+  border-radius: 999px;
+  padding: 0.4rem 1rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  text-decoration: none;
+  white-space: nowrap;
+  color: #021104 !important;
+  box-shadow: var(--shadow-neon-sm);
+  transition: var(--transition-fast);
+}
+
+.back-to-portal:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-neon-md);
+}
+
+/* =======================================
+   4. CARDS & LAYOUT
+   ======================================= */
+
+.container-fluid {
+  padding-bottom: var(--spacing-xl);
+}
+
+.card {
+  background: radial-gradient(circle at top left, #1f2a1f 0, #050806 60%);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-neon-sm);
+  backdrop-filter: blur(18px);
+  color: var(--color-text-secondary);
+}
+
+.card-header {
+  background: transparent;
+  border-bottom: 1px solid var(--color-border-light);
+  color: var(--color-accent-yellow);
+  text-shadow: var(--text-shadow-neon);
+}
+
+.card-body {
+  padding: var(--spacing-lg);
+}
+
+/* If you want a centered, compact form, wrap with .feature5-form-wrapper in index.html */
+.feature5-shell {
+  padding-top: 1.75rem;
+  padding-bottom: 2rem;
+}
+
+.feature5-form-wrapper {
+  max-width: 600px;
+  margin: 0 auto 1.5rem auto;
+}
+
+/* =======================================
+   5. TEXT & FORMS
+   ======================================= */
+
+h4, h5, h6 {
+  color: var(--color-text-primary);
+}
+
+.text-muted,
+.form-text {
+  color: var(--color-text-muted) !important;
+}
+
+strong {
+  color: var(--color-text-primary);
+}
+
+.form-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+}
+
+.form-control,
+.form-select {
+  background: rgba(3, 8, 3, 0.96);
+  border-radius: 0.7rem;
+  border: 1px solid var(--color-border-light);
+  color: var(--color-text-primary);
+}
+
+.form-control::placeholder {
+  color: rgba(200, 230, 180, 0.55);
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--color-accent-lime);
+  box-shadow: 0 0 0 1px rgba(190, 242, 45, 0.7), var(--shadow-neon-sm);
+  outline: none;
+}
+
+/* =======================================
+   6. BUTTONS
+   ======================================= */
+
+.btn-primary,
+.btn-success {
+  background-image: var(--gradient-primary);
+  border: none;
+  border-radius: 999px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #021104;
+  padding: 0.55rem 1.9rem;
+}
+
+.btn-primary:hover,
+.btn-success:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-neon-md);
+}
+
+/* back-to-inputs link, if you use it */
+.btn-link {
+  color: var(--color-accent-lime);
+}
+.btn-link:hover {
+  color: var(--color-accent-yellow);
+  text-decoration: none;
+}
+
+/* =======================================
+   7. METRIC PILLS (from your original)
+   ======================================= */
+
+.metric-pill {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  background: rgba(190, 242, 45, 0.08);
+  border: 1px solid rgba(190, 242, 45, 0.4);
+  margin-bottom: 0.45rem;
+}
+
+.metric-pill .label {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.metric-pill .value {
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+/* =======================================
+   8. TABLES & IMAGES (if you have results)
+   ======================================= */
+
+.table {
+  color: var(--color-text-secondary);
+  border-color: var(--color-border);
+}
+
+.table thead th {
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.75rem;
+}
+
+.img-fluid.rounded.border {
+  border-color: rgba(190, 242, 45, 0.5) !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.75);
+}
+
+/* =======================================
+   9. ALERTS
+   ======================================= */
+
+.alert-info,
+.alert-warning,
+.alert-danger {
+  border-radius: var(--border-radius-md);
+}
+
+/* =======================================
+   10. RESPONSIVE
+   ======================================= */
+
+@media (max-width: 767.98px) {
+  .navbar .container-fluid {
+    padding-inline: 0.75rem;
+  }
+
+  .card-body {
+    padding: var(--spacing-md);
+  }
+
+  .back-to-portal {
+    padding: 0.35rem 0.9rem;
+    font-size: 0.7rem;
+  }
+
+  .feature5-form-wrapper {
+    max-width: 100%;
+    padding-inline: 0.5rem;
+  }
+}
+.feature5-shell {
+  padding-top: 1.75rem;
+  padding-bottom: 2rem;
+}
+
+.feature5-form-wrapper {
+  max-width: 600px;
+  margin: 0 auto 1.5rem auto;
+}

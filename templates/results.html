@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+{% block title %}Climate Anomaly Results{% endblock %}
+{% block content %}
+<div class="row mb-3">
+  <div class="col-md-12">
+    <a href="{{ url_for('index') }}" class="btn btn-link">&larr; Back to inputs</a>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-4">
+    <div class="card shadow-sm mb-3">
+      <div class="card-header fw-bold">Run Summary</div>
+      <div class="card-body small">
+        <p class="mb-1"><strong>Region:</strong> {{ region }}</p>
+        <p class="mb-1"><strong>Crop:</strong> {{ crop }}</p>
+        <p class="mb-1"><strong>Scenario:</strong> {{ scenario }}</p>
+        {% if user_event %}
+          <p class="mb-1"><strong>User event:</strong> {{ user_event }}</p>
+        {% else %}
+          <p class="mb-1"><strong>User event:</strong> None</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="card shadow-sm mb-3">
+      <div class="card-header fw-bold">Climate Risk KPIs</div>
+      <div class="card-body">
+        <div class="metric-pill">
+          <span class="label">Drought risk</span>
+          <span class="value">{{ metrics.drought_risk }}</span>
+        </div>
+        <div class="metric-pill">
+          <span class="label">Flood risk</span>
+          <span class="value">{{ metrics.flood_risk }}</span>
+        </div>
+        <div class="metric-pill">
+          <span class="label">Heatwave risk</span>
+          <span class="value">{{ metrics.heatwave_risk }}</span>
+        </div>
+        <div class="metric-pill">
+          <span class="label">Overall climate risk</span>
+          <span class="value">{{ metrics.overall_climate_risk }}</span>
+        </div>
+        <div class="metric-pill">
+          <span class="label">Expected yield impact</span>
+          <span class="value">{{ metrics.expected_yield_impact }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card shadow-sm mb-3">
+      <div class="card-header fw-bold">Bulletins & News (Synthetic)</div>
+      <div class="card-body small">
+        <ul class="mb-1">
+          {% for b in bulletins[items] %}
+            <li>
+              <strong>{{ b.date }}</strong> – {{ b.source }}<br />
+              <em>{{ b.title }}</em><br />
+              {{ b.summary }}
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <div class="card shadow-sm mb-3">
+      <div class="card-header fw-bold">Backend Data Sources</div>
+      <div class="card-body small">
+        <ul class="mb-1">
+          {% for s in commons_data.sources %}
+            <li>{{ s }}</li>
+          {% endfor %}
+        </ul>
+        <p class="text-muted mb-0">
+          {{ commons_data.note }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-8">
+   
+
+    <div class="card shadow-sm mb-3">
+      <div class="card-header fw-bold">Recent Anomaly Scores (last 90 days)</div>
+      <div class="card-body small">
+        <div class="table-responsive" style="max-height: 220px; overflow-y: auto;">
+          <table class="table table-sm align-middle mb-0">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Tavg</th>
+                <th>Rain</th>
+                <th>SPI</th>
+                <th>SPEI</th>
+                <th>Score</th>
+                <th>Label</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for s in anomaly_scores %}
+                <tr>
+                  <td>{{ s.date }}</td>
+                  <td>{{ s.tavg }}</td>
+                  <td>{{ s.rain }}</td>
+                  <td>{{ s.spi }}</td>
+                  <td>{{ s.spei }}</td>
+                  <td>{{ s.score }}</td>
+                  <td>{{ s.label }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <p class="text-muted mt-2 mb-0">
+          The underlying model is a trained Gaussian anomaly detector. In production, replace it with
+          a multimodal transformer + TFT/Informer + Bayesian ensemble architecture while keeping this UI.
+        </p>
+      </div>
+    </div>
+
+    <div class="card shadow-sm mb-3">
+      <div class="card-header fw-bold">Impact Assessment & Strategy Suggestions</div>
+      <div class="card-body small">
+        <p class="mb-1">
+          <strong>Overall risk level:</strong> {{ impact_out.risk_level }} ({{ impact_out.overall_risk }})
+        </p>
+        <p class="mb-1">
+          <strong>Expected yield impact:</strong> {{ impact_out.expected_yield_impact }}
+        </p>
+        <p class="mb-1"><strong>Alerts:</strong></p>
+        <ul>
+          {% for a in impact_out.alerts %}
+            <li>{{ a }}</li>
+          {% endfor %}
+        </ul>
+
+        <hr />
+        <h6>RL Strategy Simulator Output</h6>
+        <p class="mb-1"><strong>Recommended strategy:</strong> {{ rl_out.best_strategy.strategy }}</p>
+        <p class="mb-1">
+          <strong>Residual risk:</strong> {{ rl_out.best_strategy.residual_risk }} |
+          <strong>Expected reward:</strong> {{ rl_out.best_strategy.expected_reward }}
+        </p>
+        <p class="text-muted">{{ rl_out.rl_notes }}</p>
+
+        <div class="table-responsive" style="max-height: 200px; overflow-y: auto;">
+          <table class="table table-sm align-middle mb-0">
+            <thead>
+              <tr>
+                <th>Strategy</th>
+                <th>Residual risk</th>
+                <th>Expected reward</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for s in rl_out.strategies %}
+                <tr>
+                  <td>{{ s.strategy }}</td>
+                  <td>{{ s.residual_risk }}</td>
+                  <td>{{ s.expected_reward }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
